@@ -64,7 +64,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">@if($product) Edit Product @else Add Product @endif</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-24">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-6 mb-6">
                             <label for="name" class="col-form-label">Name <span class="text-red-500">*</span></label>

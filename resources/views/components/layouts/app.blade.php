@@ -23,6 +23,7 @@
     <!--end::Third Party Plugin(Bootstrap Icons)--><!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('assets/css/adminlte.css') }}"><!--end::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Page Title' }}</title>
