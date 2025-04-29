@@ -18,26 +18,31 @@
                             <table class="table table-bordered text-center">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
+                                        <th class="text-start">Purchase Info</th>
+                                        <th>Supplier</th>
+                                        <th>Total</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($categories as $item)
+                                    @foreach ($purchases as $item)
                                         <tr class="align-middle">
-                                            <td>{{ $item->index + 1 }} </td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->description }}</td>
                                             <td class="">
-                                                @if ($item->is_active == 1)
+                                                <div class="flex flex-col text-start">
+                                                    <span class="">Purchase No: <span class="font-semibold">{{ $item->purchase_number}}</span></span>
+                                                    <span>Purchase Date: <span class="font-semibold">{{ \Carbon\Carbon::parse($item->purchase_date)->format('Y-m-d')}}</span></span>
+                                                </div>
+                                            </td>
+                                            <td>{{ $item->supplier_name }}</td> 
+                                            <td>{{ $item->total }}</td> 
+                                            <td class="">
+                                                @if ($item->status == 1)
                                                     <span
-                                                        class=" text-sm fw-semibold text-success-600 bg-green-500 px-2 py-0.5 rounded-lg text-white">Active</span>
+                                                        class=" text-sm fw-semibold text-success-600 bg-green-500 px-2 py-0.5 rounded-lg text-white">Completed</span>
                                                 @else
                                                     <span
-                                                        class=" text-sm fw-semibold text-danger-600 bg-red-500 px-2 py-0.5 rounded-lg text-white">In Active</span>
+                                                        class=" text-sm fw-semibold text-danger-600 bg-red-500 px-2 py-0.5 rounded-lg text-white">Pending</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -48,7 +53,7 @@
                                                     wire:click.prevent="delete({{ $item->id }})">Delete</button>
                                             </td>
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div> <!-- /.card-body -->

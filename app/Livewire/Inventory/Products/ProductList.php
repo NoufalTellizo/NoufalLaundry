@@ -19,6 +19,7 @@ class ProductList extends Component
         $this->products = Product::latest()->get();
         return view('livewire.inventory.products.product-list');
     }
+
     public function resetInputFields()
     {
         $this->name = '';
@@ -40,15 +41,27 @@ class ProductList extends Component
             'name' => 'required',
             'unit_id' => 'required',
             'category_id' => 'required',
-            'sku' => 'required',
-            // Rule::unique('products', 'sku')->ignore($this->sku, 'sku'),
             'purchase_price' => 'required',
         ]);
 
         if ($this->product) {
             $product = $this->product;
+            $this->validate([
+                'sku' => 'required|unique:products,sku,' . $this->product->id,
+            ]);
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Unit has been updated!'
+            ]);
         } else {
             $product = new Product();
+            $this->validate(['sku'=>'required|unique:products,sku']);
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Product has been saved!'
+            ]);
         }
 
         $product->name = $this->name;
@@ -73,6 +86,11 @@ class ProductList extends Component
             return;
         }
         $product->delete();
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Product has been deleted!'
+        ]);
     }
     public function edit($id)
     {

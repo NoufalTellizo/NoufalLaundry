@@ -10,7 +10,7 @@
                             <div class="d-flex justify-content-end">
                                 <button type="button"
                                     class="btn btn-primary text-sm btn-sm radius-8 d-flex align-items-center gap-2"
-                                    data-bs-toggle="modal" data-bs-target="#productModal">
+                                    data-bs-toggle="modal" data-bs-target="#productModal" wire:click='resetInputFields'>
                                     Add New Category
                                 </button>
                             </div>
@@ -66,7 +66,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">@if($category) Edit Category @else Add Category @endif</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-24">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-12 mb-6">
                             <label for="name" class="col-form-label">Name <span class="text-red-500">*</span></label>

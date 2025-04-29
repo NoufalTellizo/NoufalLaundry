@@ -5,13 +5,13 @@
                 <div class="col-md-12 pt-4">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h3 class="card-title">Units List</h3>
+                            <h3 class="card-title">Supplier List</h3>
 
                             <div class="d-flex justify-content-end">
                                 <button type="button"
                                     class="btn btn-primary text-sm btn-sm radius-8 d-flex align-items-center gap-2"
-                                    data-bs-toggle="modal" data-bs-target="#productModal" wire:click.prevent="resetInputFields">
-                                    Add New Unit
+                                    data-bs-toggle="modal" data-bs-target="#supplierModal" wire:click.prevent="resetFields">
+                                    Add New Supplier
                                 </button>
                             </div>
                         </div> <!-- /.card-header -->
@@ -21,19 +21,25 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Short Form</th>
-                                        <th>Description</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Tax Number</th>
+                                        <th>Opening Balance</th>
+                                        <th>Address</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($units as $item)
+                                    @foreach ($suppliers as $item)
                                         <tr class="align-middle">
                                             <td>{{ $loop->index + 1 }} </td>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->short_form }}</td>
-                                            <td>{{ $item->description }}</td>
+                                            <td>{{ $item->phone }}</td>
+                                            <td>{{ $item->email }}</td>
+                                            <td>{{ $item->tax_number }}</td>
+                                            <td>{{ $item->opening_balance }}</td>
+                                            <td>{{ $item->address }}</td>
                                             <td class="">
                                                 @if ($item->is_active == 1)
                                                     <span
@@ -45,7 +51,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-warning text-sm btn-sm radius-8 gap-2" data-bs-toggle="modal"
-                                                    data-bs-target="#productModal"
+                                                    data-bs-target="#supplierModal"
                                                     wire:click="edit({{ $item->id }})">Edit</button>
                                                 <button type="button" class="btn btn-danger text-sm btn-sm radius-8 gap-2"
                                                     wire:click.prevent="delete({{ $item->id }})">Delete</button>
@@ -61,37 +67,54 @@
         </div> <!--end::Container-->
     </div>
 
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="supplierModal" tabindex="-1"  aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">@if($unit) Edit Unit @else Add Unit @endif</h1>
+                    <h1 class="modal-title fs-5">@if($supplier) Edit Supplier @else Add Supplier @endif</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-6 mb-6">
+                        <div class="col-12 mb-6">
                             <label for="name" class="col-form-label">Name <span class="text-red-500">*</span></label>
-                            <input type="text" class="form-control" id="name" wire:model='name' placeholder="Enter Unit Name">
+                            <input type="text" class="form-control" wire:model='name' placeholder="Enter Category Name">
                             @error('name')
                             <span class="text-red-500 text-xs">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="col-6 mb-6">
-                            <label for="name" class="col-form-label">Short Form <span class="text-red-500">*</span></label>
-                            <input type="text" class="form-control" id="name" wire:model='short_form' placeholder="Enter Short Form">
-                            @error('short_form')
+                            <label for="phone" class="col-form-label">Phone Number <span class="text-red-500">*</span></label>
+                            <input type="number" class="form-control"  wire:model='phone' placeholder="Enter Phone Number">
+                            @error('phone')
                             <span class="text-red-500 text-xs">{{$message}}</span>
                             @enderror
                         </div>
+                        <div class="col-6 mb-6">
+                            <label for="email" class="col-form-label">Email </label>
+                            <input type="text" class="form-control"  wire:model='email' placeholder="Enter Email Address">
+                            
+                        </div> 
+                        <div class="col-6 mb-6">
+                            <label for="tax_number" class="col-form-label">Tax Number </label>
+                            <input type="text" class="form-control" wire:model='tax_number' placeholder="Enter Tax Number">
+                        </div>
+                        <div class="col-6 mb-6">
+                            <label for="opening_balance" class="col-form-label">Opening Balance </label>
+                            <input type="number" class="form-control" wire:model='opening_balance' placeholder="Enter Opening Balance">
+                            @error('opening_balance')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        
                         <div class="col-12 mb-6">
-                            <label for="areaName" class="col-form-label">Description</label>
-                            <textarea class="form-control resize-none" rows="3" id="description" wire:model="description" placeholder="Enter the description.."></textarea>
+                            <label for="address" class="col-form-label">Address</label>
+                            <textarea class="form-control resize-none" rows="3"  wire:model="address" placeholder="Enter the Address.."></textarea>
                         </div>
                         <div class="col-12 tw-mt-6">
                             <div class="form-switch switch-primary d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="checkbox" role="switch" id="switch1" wire:model="is_active">
-                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch1">Is Active ?</label>
+                                <input class="form-check-input" type="checkbox" role="switch" wire:model="is_active">
+                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="is_active">Is Active ?</label>
                             </div>
                         </div>
                     </div>

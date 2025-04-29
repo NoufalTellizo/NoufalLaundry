@@ -21,10 +21,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css"
         integrity="sha256-Qsx5lrStHZyR9REqhUF8iQt73X06c8LGIUPzpOhwRrI=" crossorigin="anonymous">
     <!--end::Third Party Plugin(Bootstrap Icons)--><!--begin::Required Plugin(AdminLTE)-->
+
     <link rel="stylesheet" href="{{ asset('assets/css/adminlte.css') }}"><!--end::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}"><!--end::Required Plugin(AdminLTE)-->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    
+
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Page Title' }}</title>
 </head>
@@ -35,7 +36,7 @@
 
         <livewire:components.sidebar />
         {{ $slot }}
-        {{-- <livewire:components.footer/> --}}
+        {{-- <livewire:components.footer /> --}}
     </div>
 
 
@@ -51,7 +52,6 @@
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
         const Default = {
@@ -88,19 +88,9 @@
         });
     </script>
     <script>
-        "use strict";
         document.addEventListener('livewire:init', () => {
-            Livewire.on('alert', (event) => {
-                toastr[event[0].type](event[0].message,
-                    event[0].title ?? ''), toastr.options = {
-                    "closeButton": true,
-                    "progressBar": true,
-                }
-            });
-
-            Livewire.on('reloadpage', (event) => {
-                window.location.reload()
-                console.log('reload')
+            Livewire.on('notify', (event) => {
+                toastr[event[0].type](event[0].message, event[0].title)
             });
         });
     </script>

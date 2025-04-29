@@ -19,6 +19,7 @@ class UnitList extends Component
         $this->description = '';
         $this->short_form = '';
         $this->is_active = true;
+        $this->unit = null;
         $this->resetErrorBag();
     }
     public function save()
@@ -30,8 +31,18 @@ class UnitList extends Component
 
         if($this->unit){
             $unit = $this->unit;
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Unit has been updated!'
+            ]);
         }else{
             $unit = new Unit();
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Unit has been saved!'
+            ]);
         }
 
         $unit->name = $this->name;
@@ -49,6 +60,11 @@ class UnitList extends Component
             return;
         }
         $unit->delete();
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Unit has been deleted!'
+        ]);
     }
     public function edit($id){
         $this->unit = Unit::whereId($id)->first();

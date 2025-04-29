@@ -10,7 +10,7 @@
                             <div class="d-flex justify-content-end">
                                 <button type="button"
                                     class="btn btn-primary text-sm btn-sm radius-8 d-flex align-items-center gap-2"
-                                    data-bs-toggle="modal" data-bs-target="#productModal">
+                                    data-bs-toggle="modal" data-bs-target="#productModal" wire:click="resetInputFields">
                                     Add New Product
                                 </button>
                             </div>

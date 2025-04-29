@@ -43,7 +43,7 @@
                             <button class="border bg-neutral-100 hover:bg-neutral-300 px-2 py-1 rounded-lg text-sm">
                                 Clear All
                             </button>
-                            <button
+                            <button wire:click.prevent="savePurchase()"
                                 class="border bg-blue-600 hover:bg-blue-800 text-white px-2 py-1 rounded-lg focus:ring focus:ring-gray-100 text-sm">
                                 Save
                             </button>
@@ -51,11 +51,21 @@
                     </div>
                     <div class="flex items-center justify-between mt-2">
                         <div class="flex items-center gap-2">
-                            <input type="text"
-                                class="p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100 placeholder:text-sm placeholder:text-black/70"
-                                placeholder="#Invoice Number">
-                            <input type="date"
-                                class="p-2 rounded-lg border border-gray-400 focus:outline-none text-neutral-400 ">
+                            <div class="flex flex-col">
+                                <input type="text" wire:model='invoice_number'
+                                    class="p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100 placeholder:text-sm placeholder:text-black/70"
+                                    placeholder="#Invoice Number">
+                                @error('invoice_number')
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col">
+                                <input type="date" wire:model='invoice_date'
+                                    class="p-2 rounded-lg border border-gray-400 focus:outline-none text-neutral-400 ">
+                                @error('invoice_date')
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <button class="border bg-neutral-100 hover:bg-neutral-300 px-2 py-1 rounded-lg text-sm">
@@ -107,15 +117,18 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $item['product']['name'] }}</td>
                                         <td>
-                                            <input type="number" wire:model.live ='cart.{{ $index }}.quantity' wire:input='calculateTotal()'
+                                            <input type="number" wire:model.live ='cart.{{ $index }}.quantity'
+                                                wire:input='calculateTotal()'
                                                 class="py-1 px-2 text-center rounded-lg border border-gray-400 focus:outline-none w-full focus:ring focus:ring-gray-100">
                                         </td>
                                         <td>
-                                            <input type="number" wire:model.live ='cart.{{ $index }}.rate' wire:input='calculateTotal()'
+                                            <input type="number" wire:model.live ='cart.{{ $index }}.rate'
+                                                wire:input='calculateTotal()'
                                                 class="py-1 px-2 text-center rounded-lg border border-gray-400 focus:outline-none w-full focus:ring focus:ring-gray-100">
                                         </td>
                                         <td>
-                                            <input type="number" wire:model.live ='cart.{{ $index }}.discount' wire:input='calculateTotal()'
+                                            <input type="number" wire:model.live ='cart.{{ $index }}.discount'
+                                                wire:input='calculateTotal()'
                                                 class="py-1 px-2 text-center rounded-lg border border-gray-400 focus:outline-none w-full focus:ring focus:ring-gray-100">
                                         </td>
                                         <td class="text-center">
@@ -150,14 +163,17 @@
                         <div class="flex flex-col gap-1">
                             <label for="" class="text-sm font-semibold">Paid Amount <span
                                     class="text-sm text-red-500">*</span></label>
-                            <input type="text"
+                            <input type="text" wire:model='paid_amount'
                                 class="w-full p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100 placeholder:text-sm placeholder:text-black/70"
-                                placeholder="#Invoice Number">
+                                placeholder="Enter Paid Amount">
+                            @error('paid_amount')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="flex flex-col gap-1">
                             <label for="" class="text-sm font-semibold">Payment Method <span
                                     class="text-sm text-red-500">*</span></label>
-                            <select name="" id=""
+                            <select name="" id="" wire:model='payment_method'
                                 class="w-full p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100">
                                 <option value="">Choose Payment Method</option>
                                 <option value="1">Cash</option>
@@ -166,18 +182,21 @@
                                 <option value="4">Cheque</option>
                                 <option value="5">Bank Transfer</option>
                             </select>
+                            @error('payment_method')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
                         <div class="flex flex-col gap-1">
                             <label for="" class="text-sm font-semibold">Note/Remark</label>
-                            <textarea type="text"
+                            <textarea type="text" wire:model='note'
                                 class="w-full px-3 py-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100 placeholder:text-sm resize-none placeholder:text-black/70"
                                 placeholder="Enter Note/Remark"></textarea>
                         </div>
                         <div class="flex flex-col gap-1">
                             <label for="" class="text-sm font-semibold">Payment Remark</label>
-                            <textarea type="text"
+                            <textarea type="text" wire:model='payment_remark'
                                 class="w-full px-3 py-2 rounded-lg border border-gray-400 focus:outline-none focus:ring focus:ring-gray-100 placeholder:text-sm resize-none placeholder:text-black/70"
                                 placeholder="Enter Payment Remark"></textarea>
                         </div>
@@ -186,28 +205,29 @@
                 <div class="flex flex-col gap-1 px-5">
                     <div class="flex justify-between gap-52">
                         <span>Sub Total</span>
-                        <span>{{ $cart_data['sub_total'] ?? 0}}</span>
+                        <span>{{ $cart_data['sub_total'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Discount</span>
-                        <span>{{ $cart_data['discount'] ?? 0}}</span>
+                        <span>{{ $cart_data['discount'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Taxable Amount</span>
-                        <span>{{ $cart_data['taxable-amount'] ?? 0}}</span>
+                        <span>{{ $cart_data['taxable_amount'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Tax Amount</span>
-                        <span>{{ $cart_data['tax_amount'] ?? 0}}</span>
+                        <span>{{ $cart_data['tax_amount'] ?? 0 }}</span>
                     </div>
                     <div class="flex justify-between mt-2">
                         <span class="text-xl font-semibold">Gross Total</span>
-                        <span class="text-xl font-bold">{{ $cart_data['total'] ?? 0}}</span>
+                        <span class="text-xl font-bold">{{ $cart_data['total'] ?? 0 }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-lg">
